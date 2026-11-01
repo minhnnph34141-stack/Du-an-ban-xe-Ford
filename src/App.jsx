@@ -200,7 +200,8 @@ function App() {
 
       <footer className="footer">
         <a className="brand" href="#home"><span className="brand-mark">F</span><span>FORD<span className="brand-light"> HORIZON</span></span></a>
-        <p>Khám phá lựa chọn. Bắt đầu hành trình.</p>
+        <p>Khám phá lựa chọn. Bắt đầu hành trình. Trần Văn Hoàng – Chuyên viên tư vấn xe Ford cao cấp Đồng hành cùng bạn chinh phục mọi hành trình với giải pháp sở hữu xe tối ưu, ưu đãi tốt nhất thị trường và dịch vụ tận tâm. <br />
+  📞 Hotline/Zalo tư vấn 24/7:0978841002.</p>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} Ford Horizon — Website mẫu độc lập.</span><a href="#home">Lên đầu trang ↑</a></div>
         <small className="footer-disclaimer">Website mẫu không phải website chính thức của Ford Motor Company và không đại diện cho đại lý được ủy quyền.</small>
       </footer>
