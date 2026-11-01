@@ -172,8 +172,8 @@ function App() {
             <div className="section-kicker">04 / KẾT NỐI VỚI CHÚNG TÔI</div>
             <h2>Bạn đã sẵn sàng<br />cho <em>chặng đường mới?</em></h2>
             <p>Gửi thông tin để nhận tư vấn về dòng xe, phiên bản và lịch trải nghiệm.</p>
-            <div className="contact-detail"><span>✉</span><div><small>EMAIL</small><strong>Vui lòng cập nhật email showroom</strong></div></div>
-            <div className="contact-detail"><span>⌖</span><div><small>ĐỊA CHỈ</small><strong>Vui lòng cập nhật địa chỉ showroom</strong></div></div>
+            <div className="contact-detail"><span>✉</span><div><small>EMAIL</small><strong>2k2hoangha@gmail.com</strong></div></div>
+            <div className="contact-detail"><span>⌖</span><div><small>ĐỊA CHỈ</small><strong>311 Đ. Trường Chinh, Phương Liệt, Hà Nội</strong></div></div>
           </div>
           <div className="form-panel">
             {submitted ? (
