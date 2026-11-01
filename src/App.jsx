@@ -1,211 +1,693 @@
-import { useMemo, useState } from 'react'
-
-const vehicles = [
-  {
-    id: 1, name: 'Ford Ranger', type: 'Bán tải', tag: 'BÁN CHẠY',
-    price: 'Từ 707 triệu', version: 'Wildtrak / XLS / XLT',
-    description: 'Mạnh mẽ, linh hoạt cho công việc và những chuyến đi xa.',
-    image: 'https://images.unsplash.com/photo-1551830820-330a71b99659?auto=format&fit=crop&w=1200&q=85'
-  },
-  {
-    id: 2, name: 'Ford Everest', type: 'SUV', tag: '7 CHỖ',
-    price: 'Từ 1,099 tỷ', version: 'Titanium / Sport / Ambiente',
-    description: 'Không gian rộng rãi, tiện nghi cho cả gia đình.',
-    image: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=85'
-  },
-  {
-    id: 3, name: 'Ford Territory', type: 'SUV', tag: 'ĐÔ THỊ',
-    price: 'Từ 799 triệu', version: 'Titanium X / Titanium / Trend',
-    description: 'Thiết kế hiện đại, phù hợp nhịp sống thành thị.',
-    image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1200&q=85'
-  },
-  {
-    id: 4, name: 'Ford Transit', type: 'Thương mại', tag: 'ĐA DỤNG',
-    price: 'Liên hệ', version: 'Các phiên bản tùy chọn',
-    description: 'Giải pháp vận chuyển hành khách và kinh doanh.',
-    image: 'https://images.unsplash.com/photo-1464219789935-c2d9d9aber?auto=format&fit=crop&w=1200&q=85'
-  },
-  {
-    id: 5, name: 'Ford Explorer', type: 'SUV', tag: 'CAO CẤP',
-    price: 'Liên hệ', version: 'Thông tin phiên bản tại showroom',
-    description: 'Phong thái bề thế và trải nghiệm tiện nghi.',
-    image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=85'
-  },
-  {
-    id: 6, name: 'Ford Mustang', type: 'Thể thao', tag: 'CÁ TÍNH',
-    price: 'Liên hệ', version: 'Tùy phiên bản và nguồn xe',
-    description: 'Dấu ấn thể thao dành cho người yêu cảm giác lái.',
-    image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=85'
-  }
-]
-
-const types = ['Tất cả', 'Bán tải', 'SUV', 'Thương mại', 'Thể thao']
-
-function Icon({ children }) {
-  return <span className="icon" aria-hidden="true">{children}</span>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-function App() {
-  const [activeType, setActiveType] = useState('Tất cả')
-  const [search, setSearch] = useState('')
-  const [selectedCar, setSelectedCar] = useState('')
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [form, setForm] = useState({ name: '', phone: '', interest: 'Tư vấn chọn xe', message: '' })
-  const [submitted, setSubmitted] = useState(false)
-
-  const filteredVehicles = useMemo(() => vehicles.filter(car => {
-    const matchesType = activeType === 'Tất cả' || car.type === activeType
-    const matchesSearch = car.name.toLowerCase().includes(search.toLowerCase())
-    return matchesType && matchesSearch
-  }), [activeType, search])
-
-  const chooseCar = (name) => {
-    setSelectedCar(name)
-    setForm(current => ({ ...current, interest: `Tư vấn ${name}` }))
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    setSubmitted(true)
-  }
-
-  const updateForm = (event) => setForm({ ...form, [event.target.name]: event.target.value })
-
-  return (
-    <>
-      <div className="topline">TƯ VẤN SẢN PHẨM • THÔNG TIN THAM KHẢO • ĐỒNG HÀNH TRÊN MỌI HÀNH TRÌNH</div>
-      <header className="header">
-        <a className="brand" href="#home" aria-label="Ford Horizon trang chủ">
-          <span className="brand-mark">F</span>
-          <span>FORD<span className="brand-light"> HORIZON</span></span>
-        </a>
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Mở menu">☰</button>
-        <nav className={menuOpen ? 'nav open' : 'nav'}>
-          <a href="#home" onClick={() => setMenuOpen(false)}>Trang chủ</a>
-          <a href="#vehicles" onClick={() => setMenuOpen(false)}>Dòng xe</a>
-          <a href="#about" onClick={() => setMenuOpen(false)}>Về chúng tôi</a>
-          <a href="#contact" className="nav-cta" onClick={() => setMenuOpen(false)}>Nhận tư vấn <span>↗</span></a>
-        </nav>
-      </header>
-
-      <main>
-        <section className="hero" id="home">
-          <div className="hero-bg"></div>
-          <div className="hero-content">
-            <div className="eyebrow"><span></span> SẴN SÀNG CHO HÀNH TRÌNH MỚI</div>
-            <h1>Vượt mọi giới hạn.<br /><em>Mở lối tương lai.</em></h1>
-            <p>Khám phá các dòng xe Ford, tìm chiếc xe phù hợp với phong cách sống và kế hoạch của bạn.</p>
-            <div className="hero-actions">
-              <a className="button button-primary" href="#vehicles">Khám phá dòng xe <span>↗</span></a>
-              <a className="button button-ghost" href="#contact">Đăng ký tư vấn</a>
-            </div>
-            <div className="hero-note"><span className="note-line"></span> TỰ TIN CẦM LÁI · AN TÂM TRÊN MỌI CUNG ĐƯỜNG</div>
-          </div>
-          <div className="hero-index"><strong>01</strong><span> / 03</span></div>
-          <div className="hero-bottom">
-            <div><strong>Khám phá</strong><span>Những lựa chọn đáng cân nhắc</span></div>
-            <div><strong>Tư vấn</strong><span>Thông tin theo nhu cầu của bạn</span></div>
-            <div><strong>Trải nghiệm</strong><span>Đăng ký lái thử và cảm nhận</span></div>
-          </div>
-        </section>
-
-        <section className="intro section-wrap" id="about">
-          <div className="section-kicker">01 / GIỚI THIỆU</div>
-          <div className="intro-grid">
-            <h2>Chiếc xe phù hợp<br />bắt đầu từ <em>nhu cầu</em><br />của bạn.</h2>
-            <div className="intro-copy">
-              <p className="lead">Mỗi hành trình đều có một câu chuyện. Chúng tôi giúp bạn tìm hiểu các lựa chọn xe, so sánh nhu cầu sử dụng và kết nối tư vấn phù hợp.</p>
-              <p>Khám phá thông tin các dòng xe, tham khảo phiên bản và gửi yêu cầu để được hỗ trợ thêm. Thông tin giá và trang bị trên website cần được xác nhận tại thời điểm tư vấn.</p>
-              <a className="text-link" href="#contact">Bắt đầu cuộc trò chuyện <span>↗</span></a>
-            </div>
-          </div>
-        </section>
-
-        <section className="vehicles-section" id="vehicles">
-          <div className="section-wrap">
-            <div className="section-heading">
-              <div><div className="section-kicker">02 / DANH MỤC SẢN PHẨM</div><h2>Chọn xe cho<br /><em>hành trình của bạn.</em></h2></div>
-              <p>Từ đô thị đến đường trường, từ công việc đến những chuyến đi cùng gia đình — khám phá lựa chọn dành cho bạn.</p>
-            </div>
-            <div className="catalog-tools">
-              <div className="filters">
-                {types.map(type => <button key={type} className={activeType === type ? 'filter active' : 'filter'} onClick={() => setActiveType(type)}>{type}</button>)}
-              </div>
-              <label className="search-box"><span>⌕</span><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Tìm tên xe..." /></label>
-            </div>
-            <div className="vehicle-grid">
-              {filteredVehicles.map((car, index) => (
-                <article className="vehicle-card" key={car.id}>
-                  <div className="vehicle-image">
-                    <img src={car.image} alt={`Ảnh minh họa ${car.name}`} loading="lazy" />
-                    <span className="vehicle-tag">{car.tag}</span>
-                    <span className="vehicle-number">0{index + 1}</span>
-                  </div>
-                  <div className="vehicle-info">
-                    <div className="vehicle-type">{car.type}</div>
-                    <h3>{car.name}</h3>
-                    <p>{car.description}</p>
-                    <div className="vehicle-meta"><span>{car.version}</span><strong>{car.price}</strong></div>
-                    <button className="card-link" onClick={() => chooseCar(car.name)}>Nhận tư vấn <span>↗</span></button>
-                  </div>
-                </article>
-              ))}
-            </div>
-            {filteredVehicles.length === 0 && <div className="empty-state">Không tìm thấy dòng xe phù hợp. Hãy thử từ khóa khác.</div>}
-            <p className="disclaimer">* Hình ảnh mang tính minh họa. Giá bán, phiên bản, trang bị và chương trình ưu đãi có thể thay đổi; vui lòng liên hệ để xác nhận thông tin mới nhất.</p>
-          </div>
-        </section>
-
-        <section className="experience">
-          <div className="experience-image"></div>
-          <div className="experience-content">
-            <div className="section-kicker">03 / TRẢI NGHIỆM CỦA BẠN</div>
-            <h2>Đừng chỉ nghe kể.<br /><em>Hãy tự mình trải nghiệm.</em></h2>
-            <p>Để lại thông tin và dòng xe bạn quan tâm. Đội ngũ tư vấn sẽ liên hệ để trao đổi về sản phẩm và lịch lái thử phù hợp.</p>
-            <a className="button button-primary" href="#contact">Đăng ký ngay <span>↗</span></a>
-          </div>
-        </section>
-
-        <section className="contact-section section-wrap" id="contact">
-          <div className="contact-intro">
-            <div className="section-kicker">04 / KẾT NỐI VỚI CHÚNG TÔI</div>
-            <h2>Bạn đã sẵn sàng<br />cho <em>chặng đường mới?</em></h2>
-            <p>Gửi thông tin để nhận tư vấn về dòng xe, phiên bản và lịch trải nghiệm.</p>
-            <div className="contact-detail"><span>✉</span><div><small>EMAIL</small><strong>Vui lòng cập nhật email showroom</strong></div></div>
-            <div className="contact-detail"><span>⌖</span><div><small>ĐỊA CHỈ</small><strong>Vui lòng cập nhật địa chỉ showroom</strong></div></div>
-          </div>
-          <div className="form-panel">
-            {submitted ? (
-              <div className="success-state">
-                <div className="success-icon">✓</div>
-                <h3>Cảm ơn bạn!</h3>
-                <p>Thông tin đã được ghi nhận trên trang demo này. Để nhận yêu cầu thực tế, chủ website cần kết nối form với email hoặc hệ thống quản lý khách hàng.</p>
-                <button className="button button-primary" onClick={() => { setSubmitted(false); setForm({ name: '', phone: '', interest: 'Tư vấn chọn xe', message: '' }) }}>Gửi yêu cầu khác</button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                <div className="form-title"><span>FORM TƯ VẤN</span><small>* Thông tin bắt buộc</small></div>
-                <label>Họ và tên <b>*</b><input name="name" value={form.name} onChange={updateForm} placeholder="Nhập họ và tên" required /></label>
-                <label>Số điện thoại <b>*</b><input name="phone" value={form.phone} onChange={updateForm} placeholder="Nhập số điện thoại" type="tel" pattern="[0-9+(). -]{9,16}" required /></label>
-                <label>Nội dung quan tâm<select name="interest" value={form.interest} onChange={updateForm}><option>Tư vấn chọn xe</option><option>Đăng ký lái thử</option>{vehicles.map(car => <option key={car.id}>Tư vấn {car.name}</option>)}</select></label>
-                <label>Lời nhắn<textarea name="message" value={form.message} onChange={updateForm} placeholder="Bạn muốn được tư vấn thêm điều gì?" rows="3"></textarea></label>
-                <button className="button button-primary submit-button" type="submit">Gửi yêu cầu <span>↗</span></button>
-                <p className="form-privacy">Bằng việc gửi biểu mẫu, bạn đồng ý để showroom liên hệ tư vấn theo thông tin đã cung cấp.</p>
-              </form>
-            )}
-          </div>
-        </section>
-      </main>
-
-      <footer className="footer">
-        <a className="brand" href="#home"><span className="brand-mark">F</span><span>FORD<span className="brand-light"> HORIZON</span></span></a>
-        <p>Khám phá lựa chọn. Bắt đầu hành trình.</p>
-        <div className="footer-bottom"><span>© {new Date().getFullYear()} Ford Horizon — Website mẫu độc lập.</span><a href="#home">Lên đầu trang ↑</a></div>
-        <small className="footer-disclaimer">Website mẫu không phải website chính thức của Ford Motor Company và không đại diện cho đại lý được ủy quyền.</small>
-      </footer>
-    </>
-  )
+html {
+  scroll-behavior: smooth;
 }
 
-export default App
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #101820;
+  background: #fff;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.container {
+  width: min(1180px, 90%);
+  margin: auto;
+}
+
+.topbar {
+  background: #061a35;
+  color: #fff;
+  font-size: 12px;
+  padding: 11px 0;
+}
+
+.topbar-inner,
+.topbar-inner > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.topbar a {
+  color: #dce9f8;
+}
+
+.navbar {
+  height: 82px;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 3px 16px rgba(0,0,0,.06);
+}
+
+.brand {
+  color: #0756a5;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-style: italic;
+}
+
+.brand span {
+  font-size: 11px;
+  vertical-align: top;
+}
+
+.navbar nav {
+  display: flex;
+  gap: 32px;
+}
+
+.navbar nav a {
+  font-size: 14px;
+  font-weight: 600;
+  transition: color .2s;
+}
+
+.navbar nav a:hover {
+  color: #0866c6;
+}
+
+.nav-button,
+.primary-button,
+.submit-button {
+  background: #0756a5;
+  color: #fff;
+  padding: 15px 23px;
+  border: 0;
+  font-weight: 700;
+  display: inline-block;
+  transition: .25s;
+  cursor: pointer;
+}
+
+.nav-button:hover,
+.primary-button:hover,
+.submit-button:hover {
+  background: #003c78;
+  transform: translateY(-2px);
+}
+
+.hero {
+  min-height: 650px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
+  background: #061a35;
+}
+
+.hero-background,
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  background: linear-gradient(90deg, rgba(3,17,36,.95), rgba(3,17,36,.62) 48%, rgba(3,17,36,.08));
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding-top: 30px;
+  padding-bottom: 75px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #65a9f2;
+  margin-bottom: 22px;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 6vw, 76px);
+  line-height: 1.08;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+.hero h1 span {
+  color: #66aaff;
+}
+
+.hero-description {
+  max-width: 510px;
+  line-height: 1.8;
+  color: #e1e9f3;
+  margin-top: 25px;
+  font-size: 16px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.outline-button {
+  padding: 15px 23px;
+  border: 1px solid #fff;
+  color: #fff;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.outline-button:hover {
+  background: #fff;
+  color: #061a35;
+}
+
+.hero-bottom {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #d6e4f4;
+}
+
+.intro {
+  padding-top: 100px;
+  padding-bottom: 100px;
+  text-align: center;
+}
+
+.intro h2,
+.section-heading h2 {
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.25;
+  margin-bottom: 20px;
+}
+
+.intro h2 span,
+.section-heading h2 span {
+  color: #0756a5;
+}
+
+.intro > p:last-child {
+  max-width: 650px;
+  margin: auto;
+  color: #657184;
+  line-height: 1.8;
+}
+
+.cars-section {
+  background: #f3f6fa;
+  padding: 90px 0 100px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.section-heading .eyebrow {
+  margin-bottom: 12px;
+}
+
+.section-heading > p {
+  color: #697586;
+  padding-bottom: 8px;
+}
+
+.car-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.car-tools input {
+  width: 100%;
+  max-width: 420px;
+  padding: 15px 17px;
+  border: 1px solid #d6deea;
+  background: #fff;
+  outline: none;
+}
+
+.car-tools input:focus,
+.lead-form input:focus,
+.lead-form select:focus,
+.lead-form textarea:focus {
+  border-color: #0756a5;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter {
+  padding: 10px 19px;
+  border: 1px solid #d5deea;
+  background: #fff;
+  color: #253348;
+  cursor: pointer;
+}
+
+.filter.active,
+.filter:hover {
+  background: #0756a5;
+  color: #fff;
+  border-color: #0756a5;
+}
+
+.car-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.car-card {
+  background: #fff;
+  overflow: hidden;
+  transition: transform .25s, box-shadow .25s;
+}
+
+.car-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0,30,70,.12);
+}
+
+.car-image {
+  height: 230px;
+  position: relative;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.car-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s;
+}
+
+.car-card:hover .car-image img {
+  transform: scale(1.05);
+}
+
+.car-number {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: #fff;
+  background: #0756a5;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.car-info {
+  padding: 24px;
+}
+
+.car-type {
+  color: #0756a5;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.car-info h3 {
+  font-size: 25px;
+  margin: 10px 0 22px;
+}
+
+.car-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid #e6eaf0;
+  font-size: 14px;
+}
+
+.car-footer a {
+  color: #0756a5;
+  font-weight: 800;
+}
+
+.empty-result {
+  color: #657184;
+  padding: 20px 0;
+}
+
+.contact-section {
+  padding: 100px 0;
+  background: #071c38;
+  color: #fff;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 440px;
+  gap: 80px;
+  align-items: start;
+}
+
+.contact-copy h2 {
+  font-size: clamp(36px, 4vw, 54px);
+  line-height: 1.2;
+  margin-bottom: 22px;
+}
+
+.contact-copy h2 span {
+  color: #69aaff;
+}
+
+.contact-description {
+  max-width: 490px;
+  color: #c4d0df;
+  line-height: 1.8;
+}
+
+.dealer-details {
+  margin-top: 38px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,.2);
+}
+
+.dealer-details h3 {
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 25px;
+}
+
+.dealer-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 23px;
+}
+
+.dealer-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: #123e70;
+  color: #8dc2ff;
+}
+
+.dealer-item small {
+  display: block;
+  color: #8fa9c6;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  margin-bottom: 7px;
+}
+
+.dealer-item a,
+.dealer-item p {
+  color: #fff;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.dealer-item a:hover {
+  color: #8dc2ff;
+}
+
+.map-button {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 13px 19px;
+  border: 1px solid #8dc2ff;
+  color: #fff;
+  font-weight: 700;
+}
+
+.map-button:hover {
+  background: #0756a5;
+}
+
+.lead-form {
+  background: #fff;
+  color: #101820;
+  padding: 38px;
+}
+
+.lead-form .eyebrow {
+  margin-bottom: 12px;
+}
+
+.lead-form h3 {
+  font-size: 29px;
+  margin-bottom: 10px;
+}
+
+.form-description {
+  color: #687588;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.lead-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 17px 0 8px;
+}
+
+.lead-form input,
+.lead-form select,
+.lead-form textarea {
+  width: 100%;
+  border: 1px solid #d6deea;
+  padding: 13px;
+  outline: none;
+  background: #fff;
+  color: #101820;
+  border-radius: 0;
+}
+
+.lead-form textarea {
+  resize: vertical;
+}
+
+.submit-button {
+  width: 100%;
+  margin-top: 22px;
+}
+
+.privacy-note {
+  display: block;
+  color: #788496;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 14px;
+}
+
+.footer {
+  background: #041329;
+  color: #fff;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  padding-top: 38px;
+  padding-bottom: 38px;
+}
+
+.footer-brand {
+  color: #fff;
+}
+
+.footer-content > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: #c4d0df;
+}
+
+.footer-content > div p {
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.back-top {
+  color: #8dc2ff;
+  font-size: 13px;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.12);
+  padding: 17px 5%;
+  text-align: center;
+  color: #9aabc0;
+  font-size: 12px;
+}
+
+.floating-call {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 30;
+  width: 55px;
+  height: 55px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #0756a5;
+  color: #fff;
+  font-size: 23px;
+  box-shadow: 0 5px 20px rgba(0,0,0,.25);
+}
+
+@media (max-width: 850px) {
+  .navbar {
+    height: auto;
+    min-height: 75px;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .navbar nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .car-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .lead-form {
+    max-width: 600px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar-inner,
+  .topbar-inner > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .topbar-inner > div {
+    display: none;
+  }
+
+  .navbar nav {
+    gap: 13px;
+  }
+
+  .navbar nav a {
+    font-size: 12px;
+  }
+
+  .nav-button {
+    padding: 11px 13px;
+    font-size: 12px;
+  }
+
+  .hero {
+    min-height: 620px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+  }
+
+  .hero-bottom {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .hero-bottom span:last-child {
+    display: none;
+  }
+
+  .intro,
+  .cars-section,
+  .contact-section {
+    padding-top: 65px;
+    padding-bottom: 65px;
+  }
+
+  .section-heading {
+    display: block;
+  }
+
+  .section-heading > p {
+    margin-top: 10px;
+  }
+
+  .car-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .car-image {
+    height: 220px;
+  }
+
+  .lead-form {
+    padding: 25px 20px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
